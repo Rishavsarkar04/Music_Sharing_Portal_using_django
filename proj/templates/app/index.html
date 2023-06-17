@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Music Share</title>
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="{% static 'app/css/style.css' %}" rel="stylesheet" >
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+       
+
+    </head>
+    <body>
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand" href="/"> </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto py-4 py-lg-0">
+                   
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'upload'%}">upload</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'logout'%}">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+
+        <!-- Page Header-->
+        <header class="masthead mb-0" style="background-image: url({% static 'app/images/music1.jpg'%})">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading">
+                            <h1>Music Share</h1>
+                            <span class="subheading">Music website</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </header>
+
+        <br>
+        <br>
+
+        {% comment %} <form method="get" action="/search" style="float: right ; margin-right: 8px">
+
+            <input type="search" placeholder="search" name="qeury" input="search">
+            <button type="submit">Search</button>
+            
+        </form> {% endcomment %}
+        
+        <!-- Main Content-->
+     
+           
+                
+                    <!-- Post preview-->
+                  
+
+
+                    <div >
+                        <table >
+                           
+                            {% for music in all_musics.object_list %}
+                            <tr>
+                                <th style="width:500px;text-align: center">Song Title</th>
+                                <th style="width:500px;text-align: center">Artist</th>
+                                <th style="width:500px;text-align: center">visibilty</th>
+                                
+                                
+                            </tr>
+                        
+                            <tr style="border-bottom: 1px solid black;">
+                                    <td style="width:500px;text-align: center"><div><img src="{{music.image.url}}" alt="Girl in a jacket" width="50" height="50"></div>{{music.title}}</td>
+                                    <td style="width:400px;text-align: center">{{music.singer}}</td>
+                                    <td style="width:500px;text-align: center">{{music.visibility}}</td>
+                                    <td style="width:500px;text-align: center">
+                                        <audio controls>  
+                                        <source src="{{music.file.url}}" type="audio/mpeg"></audio>
+                                        <span>{% if request.user.is_superuser %}
+                                            <a href="{% url 'delete' music.id %}" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true"> delete </a>
+                                             {% endif %}</span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                            
+                    
+                        </table>
+                    </div>
+
+
+ <div style="text-align: center;">
+    <span>
+        {% if all_musics.has_previous %}
+            <a href="?page=1" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" >&laquo; first</a>
+            <a href="?page={{ all_musics.previous_page_number }}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">previous</a>  
+        {% endif %}
+
+         <span class="current">
+            Page {{ all_musics.number }} of {{ all_musics.paginator.num_pages }}
+        </span> 
+
+        {% if all_musics.has_next %}
+            <a href="?page={{ all_musics.next_page_number }}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">next</a>
+            <a href="?page={{ all_musics.paginator.num_pages }}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">last &raquo;</a>
+        {% endif %}
+    </span>
+</div> 
+
+
+<br>
+<br>
+	<!-- Footer-->
+        <footer class="border-top">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <ul class="list-inline text-center">
+                            <li class="list-inline-item">
+                                {% comment %} <a href="{{params['tw_url']}}" target="_blank"> {% endcomment %}
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                {% comment %} <a href="{{params['fb_url']}}" target="_blank"> {% endcomment %}
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                {% comment %} <a href="{{params['gh_url']}}" target="_blank"> {% endcomment %}
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fas fa-circle fa-stack-2x"></i>
+                                        <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="small text-center text-muted fst-italic">Copyright &copy; music</div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="{% static 'app/js/script.js' %}"></script>
+    </body>
+</html>
