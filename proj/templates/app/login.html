@@ -5,39 +5,45 @@
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-    
+
         <!--Owl Carousel CSS-->
         <link rel="stylesheet" href="{% static 'app/css/owl.carousel.min.css' %}">
-    
+
         <!--FontAwesome CSS-->
         <link rel="stylesheet" href="{% static 'app/css/all.min.css' %}">
-    
+
         <!--Custom CSS-->
         <link rel="stylesheet" href="{% static 'app/css/style.css' %}">
-    
-    
+
         <title>log in</title>
       </head>
 <body>
+{% if messages %}
+      {% for message in messages %}
+      <p {% if message.tags %} class = "alert alert-{{message.tags}} mb-5" {% endif %}> {{message}} </p>
+
+      {% endfor %}
+      <br>
+      {% endif %}
 
     <div class="container">
         <div class="row my-3">
          <div class="col-sm-6 offset-sm-3">
           <h3 class="text-center">log In</h3>
           <hr>
-       
+
           <form method="post" novalidate class="shadow p-5">
             {% csrf_token %}
-             
+
             {% for fm in form  %}
-             
-            <div class='form-group mb-3'> 
+
+            <div class='form-group mb-3'>
                 {{fm.label_tag}} {{fm}} <small class= 'text-danger'> {{fm.errors|striptags}} </small>
              </div>
-             
+
              {% endfor %}
              <input type='submit' class='btn-btn-primary' value='submit'>
           </form>
@@ -54,8 +60,6 @@
          </div>
         </div>
        </div>
-
-
 
          <!-- Start Footer -->
     <footer class="container-fluid bg-dark text-center p-2 mt-5">
