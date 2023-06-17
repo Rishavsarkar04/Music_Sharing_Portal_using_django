@@ -15,14 +15,10 @@
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'app/css/style.css' %}" rel="stylesheet" >
-        
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-
-
-       
 
     </head>
     <body>
@@ -36,15 +32,13 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ms-auto py-4 py-lg-0">
-                   
+
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'upload'%}">upload</a></li>
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{% url 'logout'%}">Logout</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
-
-
 
         <!-- Page Header-->
         <header class="masthead mb-0" style="background-image: url({% static 'app/images/music1.jpg'%})">
@@ -57,46 +51,38 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            
-        </header>
+          </div>
+	 </header>
 
         <br>
         <br>
 
-        {% comment %} <form method="get" action="/search" style="float: right ; margin-right: 8px">
-
-            <input type="search" placeholder="search" name="qeury" input="search">
-            <button type="submit">Search</button>
-            
-        </form> {% endcomment %}
-        
         <!-- Main Content-->
-     
-           
-                
-                    <!-- Post preview-->
-                  
+{% if messages %}
+      {% for message in messages %}
+      <p {% if message.tags %} class = "alert alert-{{message.tags}} mb-5" {% endif %}> {{message}} </p>
 
+      {% endfor %}
+      <br>
+      {% endif %}
+
+                    <!-- Post preview-->
 
                     <div >
                         <table >
-                           
+
                             {% for music in all_musics.object_list %}
                             <tr>
                                 <th style="width:500px;text-align: center">Song Title</th>
                                 <th style="width:500px;text-align: center">Artist</th>
                                 <th style="width:500px;text-align: center">visibilty</th>
-                                
-                                
                             </tr>
-                        
                             <tr style="border-bottom: 1px solid black;">
-                                    <td style="width:500px;text-align: center"><div><img src="{{music.image.url}}" alt="Girl in a jacket" width="50" height="50"></div>{{music.title}}</td>
+                                    <td style="width:500px;text-align: center"><div><img src="{{music.image.url}}" alt="{% static 'app/images/default_img.png'%}" width="50" height="50"></div>{{music.title}}</td>
                                     <td style="width:400px;text-align: center">{{music.singer}}</td>
                                     <td style="width:500px;text-align: center">{{music.visibility}}</td>
                                     <td style="width:500px;text-align: center">
-                                        <audio controls>  
+                                        <audio controls>
                                         <source src="{{music.file.url}}" type="audio/mpeg"></audio>
                                         <span>{% if request.user.is_superuser %}
                                             <a href="{% url 'delete' music.id %}" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true"> delete </a>
@@ -104,9 +90,6 @@
                                     </td>
                                 </tr>
                             {% endfor %}
-
-                            
-                    
                         </table>
                     </div>
 
@@ -115,19 +98,20 @@
     <span>
         {% if all_musics.has_previous %}
             <a href="?page=1" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" >&laquo; first</a>
-            <a href="?page={{ all_musics.previous_page_number }}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">previous</a>  
+            <a href="?page={{ all_musics.previous_page_number }}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">previous</a>
         {% endif %}
 
          <span class="current">
             Page {{ all_musics.number }} of {{ all_musics.paginator.num_pages }}
-        </span> 
+        </span>
 
         {% if all_musics.has_next %}
             <a href="?page={{ all_musics.next_page_number }}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">next</a>
             <a href="?page={{ all_musics.paginator.num_pages }}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">last &raquo;</a>
         {% endif %}
     </span>
-</div> 
+</div>
+
 
 
 <br>
