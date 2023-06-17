@@ -1,10 +1,10 @@
-from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views as auth_views
 from app import views
 from app.forms import LoginForm
 from django.conf import settings
 from django.conf.urls.static import static
+
 
 urlpatterns = [
     path('signup', views.signup,name='signup'),
