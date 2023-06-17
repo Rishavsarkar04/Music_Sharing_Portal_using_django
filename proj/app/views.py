@@ -1,12 +1,15 @@
 from django.shortcuts import render,redirect
 from app.forms import SignupForm, MusicUploadForm,EmailForm
-from app.models import MusicFile,MyUser
+from app.models import MusicFile
 from django.contrib.auth.decorators import login_required
 from app.thread import CustomThread
 from django.db.models import Q
 from itertools import chain
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404
+from django.contrib import messages
+
+
 
 
 # Create your views here.
@@ -23,8 +26,8 @@ def home(request):
                 chain(public_musics,private_music,protected_music),
                 key=lambda objects: objects.title,
             ))
-    
-    paginator  = Paginator(musics, 2 ,orphans=1)
+
+    paginator  = Paginator(musics, 4 ,orphans=1)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
@@ -47,15 +50,18 @@ def upload(request):
             if object.visibility=='Protected':
                 object.emails.add(request.user)
                 CustomThread(object,em_list).start()
+            messages.success(request,'you have successfully uploaded your song')
             return redirect('home')
     else:
         form = MusicUploadForm()
         form2=EmailForm()
     return render(request,'app/upload.html',{'form':form,'form2':form2} )
-
+    
+@login_required
 def delete(request,id):
     obj = get_object_or_404(MusicFile, pk=id)
     obj.delete()
+    messages.error(request,'song deleted')
     return redirect('home')
 
 
@@ -64,7 +70,9 @@ def signup(request):
         form = SignupForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request,'you have successfully done your sign up')
             return redirect('login')
     else:
         form = SignupForm()
     return render(request,'app/signup.html',{'form':form})
+
