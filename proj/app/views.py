@@ -16,17 +16,7 @@ from django.contrib import messages
 
 @login_required
 def home(request):
-    public_musics = MusicFile.objects.filter(Q(visibility='Public')).all()
-    private_music = MusicFile.objects.filter(Q(visibility='Private') & Q(uploader=request.user)).all()
-    protected_music = MusicFile.objects.filter(Q(visibility='Protected') & Q(emails=request.user)).all()
-
-
-    musics = list(
-            sorted(
-                chain(public_musics,private_music,protected_music),
-                key=lambda objects: objects.title,
-            ))
-
+    musics= MusicFile.objects.filter(Q(visibility='Public') | (Q(visibility='Private') & Q(uploader=request.user)) | (Q(visibility='Protected') & Q(emails=request.user))).all().order_by('visibility')
     paginator  = Paginator(musics, 4 ,orphans=1)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
