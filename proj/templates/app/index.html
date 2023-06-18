@@ -71,11 +71,12 @@
                     <div >
                         <table >
 
-                            {% for music in all_musics.object_list %}
+                            {% for music in all_musics %}
                             <tr>
                                 <th style="width:500px;text-align: center">Song Title</th>
                                 <th style="width:500px;text-align: center">Artist</th>
                                 <th style="width:500px;text-align: center">visibilty</th>
+				<th style="width:500px;text-align: center">Uploader</th>
                             </tr>
                             <tr style="border-bottom: 1px solid black;">
                                     <td style="width:500px;text-align: center"><div><img src="{{music.image.url}}" alt="{% static 'app/images/default_img.png'%}" width="50" height="50"></div>{{music.title}}</td>
