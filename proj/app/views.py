@@ -23,7 +23,6 @@ def home(request):
 
     context ={
         'all_musics':page_obj,
-        'private_music':private_music,
     }
     return render(request,'app/index.html',context=context)
 
