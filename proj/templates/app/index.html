@@ -56,7 +56,13 @@
 
         <br>
         <br>
-
+<form method="get" >
+            <label for="id_visibility">Visibility:</label>
+            {{music_filter.form.visibility}}
+            <label for="id_uploader">Uploader name:</label>
+            {{music_filter.form.uploader}}
+            <button type="submit">Search</button>
+        </form> 
         <!-- Main Content-->
 {% if messages %}
       {% for message in messages %}
@@ -67,7 +73,7 @@
       {% endif %}
 
                     <!-- Post preview-->
-
+{% if flag %}
                     <div >
                         <table >
 
@@ -113,6 +119,9 @@
     </span>
 </div>
 
+{% else%}
+       <p style = 'text-align:center'> No uploads Available According Your Search</p>
+    {% endif %}
 
 
 <br>
