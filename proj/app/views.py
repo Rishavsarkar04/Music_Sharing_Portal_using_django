@@ -28,7 +28,7 @@ def home(request):
     else:
         flag = True
         
-    paginator  = Paginator(page_obj, 3,orphan=1)
+    paginator  = Paginator(page_obj,4,orphans=1)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
         
