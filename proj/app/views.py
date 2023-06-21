@@ -21,8 +21,22 @@ def home(request):
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
+    flag = False
+    if len(page_obj) == 0:
+        flag = False
+    else:
+        flag = True
+    print(len(page_obj) ,'lenth')
+
+
+    paginator  = Paginator(page_obj, 1)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+        
     context ={
         'all_musics':page_obj,
+        'music_filter':music_filter,
+        'flag':flag,
     }
     return render(request,'app/index.html',context=context)
 
