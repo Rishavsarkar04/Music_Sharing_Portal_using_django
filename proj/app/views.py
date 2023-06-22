@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from app.forms import SignupForm, MusicUploadForm,EmailForm
+from app.forms import SignupForm, MusicUploadForm
 from app.models import MusicFile
 from django.contrib.auth.decorators import login_required
 from app.thread import CustomThread
