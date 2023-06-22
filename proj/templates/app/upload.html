@@ -103,12 +103,19 @@
                               <label for="visibilty">select a visibilty of the music</label>
                               {{form.visibility}}<small class= 'text-danger'> {{form.visibility.errors|striptags}} </small>
                             </div>
-
-
-                              <label for="emails">protected users emails</label>
-                              {{form2.emails}} <small class= 'text-danger'> {{form2.emails.errors|striptags}} </small>
+			   <div class="form-group">
+                            <label for="emails">protected users emails</label>
+                              {{form.emails}} <small class= 'text-danger'> {{form.emails.errors|striptags}} </small>
+                            </div>
                               <br>
                               <input type='submit' class='btn-btn-primary' value='submit'>
+                              
+                            {% if form.non_field_errors  %}
+                            {% for error in form.non_field_errors  %}
+                            <p class= 'alert alert-danger my-3'>{{error}}</p>
+                            {% endfor %}
+                            {% endif %}
+                            
                           </form>
 
 
