@@ -18,7 +18,6 @@ from app.filter import MusicFilterForm
 def home(request):
     musics= MusicFile.objects.filter(Q(visibility='Public') | (Q(visibility='Private') & Q(uploader=request.user)) | (Q(visibility='Protected') & Q(emails=request.user))).all().order_by('visibility')
 
-    music_filter = MusicFilterForm()
     music_filter = MusicFilterForm(request.GET, queryset=musics)
     page_obj = music_filter.qs
 
