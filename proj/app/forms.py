@@ -41,6 +41,33 @@ class MusicUploadForm(forms.ModelForm):
             'emails': forms.Textarea(attrs={'class':'form-control', 'placeholder': 'Enter protected user email addresses  separated by commas (,)'}),
         }
 
+    def clean(self):
+        cleaned_data = super().clean()
+        visibility = cleaned_data.get("visibility")
+        emails = cleaned_data.get("emails")
+        print(emails,'clean')
+        if visibility == 'Public' or visibility == 'Private':
+            print(visibility)
+            if emails==None or len(emails)>0 :
+                print('has email')
+                raise ValidationError('select \"protect\" visibility to mention emails')
+            
+    def clean_emails(self):
+        emails = self.cleaned_data.get("emails")
+        print(emails,'clean field')
+        print(len(emails),'length clean field')
+        if emails =='':
+            return emails
+        if len(emails)!=0: 
+            email_split = emails.split(',')
+            emails_list = [email.strip() for email in email_split if email !='']
+            for email in emails_list:
+                try:
+                    user_exist = MyUser.objects.get(email=email)
+                except ObjectDoesNotExist:
+                    raise ValidationError('mentioned email does not exists')
+            return emails_list
+        
     def clean_file(self):
         file = self.cleaned_data.get('file')
         file_str = str(file)
@@ -48,6 +75,7 @@ class MusicUploadForm(forms.ModelForm):
             return file
         else:
             raise ValidationError('upload mp3 file')
+
        
 
 class EmailForm(forms.Form):
