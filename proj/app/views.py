@@ -42,21 +42,19 @@ def home(request):
 def upload(request):
     if request.method == 'POST':
         form = MusicUploadForm(request.POST, request.FILES)
-        form2=EmailForm(request.POST)
-        if form.is_valid() and form2.is_valid():
-            em_list = form2.cleaned_data['emails']
+        if form.is_valid():
+            em_list = form.cleaned_data['emails']
             object=form.save(commit=False)
-            object.uploader = request.user
-            object.save()
+            object.uploader = request.user    
+            object.save()    
             if object.visibility=='Protected':
                 object.emails.add(request.user)
                 CustomThread(object,em_list).start()
             messages.success(request,'you have successfully uploaded your song')
-            return redirect('home')
+            return redirect('upload')
     else:
         form = MusicUploadForm()
-        form2=EmailForm()
-    return render(request,'app/upload.html',{'form':form,'form2':form2} )
+    return render(request,'app/upload.html',{'form':form} )
     
 @login_required
 def delete(request,id):
