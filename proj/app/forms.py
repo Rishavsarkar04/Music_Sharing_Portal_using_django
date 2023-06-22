@@ -28,6 +28,7 @@ class LoginForm(AuthenticationForm):
 
 
 class MusicUploadForm(forms.ModelForm):
+    emails = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control', 'placeholder': 'Enter protected user email addresses  separated by commas (,)'}),required=False)
     class Meta:
         model = MusicFile
         fields = ['title','singer','file','image','visibility']
