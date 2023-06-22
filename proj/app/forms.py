@@ -78,18 +78,3 @@ class MusicUploadForm(forms.ModelForm):
 
        
 
-class EmailForm(forms.Form):
-    emails = forms.CharField(widget=forms.Textarea(attrs={'class':'form-control', 'placeholder': 'Enter protected user email addresses  separated by commas (,)'}),required=False)
-
-    def clean_emails(self):
-        emails = self.cleaned_data.get("emails")
-        if len(emails)!=0: 
-            email_split = emails.split(',')
-            emails_list = [email.strip() for email in email_split]
-            for email in emails_list:
-                try:
-                    user_exist = MyUser.objects.get(email=email)
-                except ObjectDoesNotExist:
-                    raise ValidationError('mentioned email does not exists')
-        
-            return emails_list
